@@ -1,0 +1,9 @@
+.bg-404{ position: relative; }
+.t404{ width: 482px; height:350px; padding:50px 100px; border: 1px solid #ddd;position: absolute;left: 50%; margin-left: -341px; top: 50%; margin-top: -225px;}
+.bg-404 p{ text-align: center; font-size: 16px; line-height: 30px;color: #999 }
+.bg-404 p a{ color: #ef7d00; }
+.bg-404 p a:hover{ color: #666; text-decoration: none }
+.jump{width: 700px; height:168px; padding:50px 100px;position: absolute;left: 50%; margin-left: -350px; top: 50%; margin-top: -184px;}
+.jump p { padding: 40px 0; text-align: left; line-height: 30px;}
+.jump p em{ color: #999; font-size: 24px; font-style: normal; }
+.jump img{    float: left;    padding-right: 20px;}

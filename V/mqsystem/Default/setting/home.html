@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="__THEMES__/css/font.css">
+  <link rel="stylesheet" href="__THEMES__/css/common.css">
+  <link rel="stylesheet" href="__THEMES__/css/xadmin.css">
+  <link rel="stylesheet" href="__THEMES__/css/main.css?v=1.5">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__THEMES__/js/xadmin.js"></script>
+</head>
+
+<body class="x-body layui-anim layui-anim-up">
+<blockquote class="layui-elem-quote r-nav">Setting Home  -- 子进程平滑重启<span class="x-red"> php index.php m=cli s=RMQ i=reload</span>
+  <a class="layui-btn layui-btn-small reload"  href="javascript:location.replace(location.href);" title="刷新">
+    <i class="layui-icon" style="line-height:30px">ဂ</i>
+  </a>
+</blockquote>
+  <form class="layui-form">
+    <div class="layui-row layui-col-space10 layui-this x-admin-backlog">
+  <div class="layui-col-xs6 setting-form-part">
+    <blockquote class="layui-form-item layui-form-label setting-part-tit">SMTP
+    </blockquote>             
+    <div class="layui-form-item">
+      <label for="smtphost" class="layui-form-label setting-label">
+        <span class="x-red">*</span> SMTP服务器
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="smtpconfig[host]" name="smtpconfig[host]" required="" value="{$Start::$smtpconfig['host'] nofilter}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> stmp.jsran.cn
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="smtpport" class="layui-form-label setting-label">
+        <span class="x-red">*</span> 服务器端口
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="smtpconfig[port]" name="smtpconfig[port]" required="" lay-verify="number" value="{$Start::$smtpconfig['port'] nofilter}" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="smtpuser" class="layui-form-label setting-label" >
+        <span class="x-red">*</span> 用户名
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="smtpconfig[user]" name="smtpconfig[user]" required="" lay-verify="email" value="{$Start::$smtpconfig['user'] nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> js@jsran.cn
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="smtppass" class="layui-form-label setting-label">
+        <span class="x-red">*</span> 密码
+      </label>
+      <div class="layui-input-inline">
+        <input type="password" id="smtpconfig[pass]" name="smtpconfig[pass]" required="" lay-verify="required" value="{$Start::$smtpconfig['pass'] nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 123456
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-col-xs6 setting-form-part">
+    <blockquote class="layui-form-item layui-form-label setting-part-tit">Consume
+    </blockquote>             
+    <div class="layui-form-item">
+      <label for="consume_nums" class="layui-form-label setting-label" >
+        <span class="x-red">*</span> 子进程数量
+      </label>
+      <div class="layui-input-inline setting-num" >
+        <input type="number" id="consume_nums" name="consume_nums" required="" lay-verify="number" value="{$Start::$consume_nums nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">* 消费进程数量,重新启动主进程生效</span>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="consume_rmax" class="layui-form-label setting-label" >
+        <span class="x-red">*</span> 执行n重建
+      </label>
+      <div class="layui-input-inline setting-num" >
+        <input type="number" id="consume_rmax" name="consume_rmax" required="" lay-verify="number" value="{$Start::$consume_rmax nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 有效执行N次后结束子进程并创建一个新的
+      </div>
+    </div>
+
+    
+
+    <div class="layui-form-item">
+      <label for="priorityConfig[1]" class="layui-form-label setting-label">
+        <span class="x-red">*</span> 高级消费数
+      </label>
+      <div class="layui-input-inline setting-num">
+        <input type="number" id="priorityConfig[1]" name="priorityConfig[1]" required="" lay-verify="number" value="{$Start::$priorityConfig[1] nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 消费优先级为高时的消费数量。
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="priorityConfig[2]" class="layui-form-label setting-label">
+        <span class="x-red">*</span> 中级消费数
+      </label>
+      <div class="layui-input-inline setting-num">
+        <input type="number" id="priorityConfig[2]" name="priorityConfig[2]" required="" lay-verify="number" value="{$Start::$priorityConfig[2] nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 消费优先级为中时的消费数量。
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="priorityConfig[3]" class="layui-form-label setting-label">
+        <span class="x-red">*</span> 低级消费数
+      </label>
+      <div class="layui-input-inline setting-num">
+        <input type="number" id="priorityConfig[3]" name="priorityConfig[3]" required="" lay-verify="number" value="{$Start::$priorityConfig[3] nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 消费优先级为低时的消费数量。
+      </div>
+    </div>
+
+  </div>
+  
+
+
+  <div class="layui-col-xs6 setting-form-part" style="height: 230px;">
+    <blockquote class="layui-form-item layui-form-label setting-part-tit">Timer
+    </blockquote>
+    
+    <div class="layui-form-item">
+      <label for="timer_nums" class="layui-form-label setting-label" >
+        <span class="x-red">*</span> 子进程数量
+      </label>
+      <div class="layui-input-inline setting-num" >
+        <input type="number" id="timer_nums" name="timer_nums" required="" lay-verify="number" value="{$Start::$timer_nums nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">* 延时监测进程数量,重新启动主进程生效</span>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="timer_rmax" class="layui-form-label setting-label" >
+        <span class="x-red">*</span> 执行n重建
+      </label>
+      <div class="layui-input-inline setting-num" >
+        <input type="number" id="timer_rmax" name="timer_rmax" required="" lay-verify="number" value="{$Start::$timer_rmax nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 有效执行N次后结束子进程并创建一个新的
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="notify_nums" class="layui-form-label setting-label">
+        <span class="x-red">*</span> 异常重复推送数
+      </label>
+      <div class="layui-input-inline setting-num">
+        <input type="number" id="notify_nums" name="notify_nums" required="" lay-verify="number" value="{$Start::$notify_nums nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 消费异常时连续推送的次数,间隔为2n+1/min
+      </div>
+    </div>
+  </div>
+  <div class="layui-col-xs6 setting-form-part" style="height: 230px;">
+    <blockquote class="layui-form-item layui-form-label setting-part-tit">Redis
+    </blockquote>             
+    <div class="layui-form-item">
+      <label for="redis_bug_mail" class="layui-form-label setting-label">
+        <span class="x-red">*</span> 宕机通知邮箱
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="redis_bug_mail" name="redis_bug_mail" required="" lay-verify="required" value="{$Start::$redis_bug_mail nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> js@jsran.cn
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="redis_ping_interval" class="layui-form-label setting-label" >
+        <span class="x-red">*</span> 心跳监测间隔
+      </label>
+      <div class="layui-input-inline setting-num">
+        <input type="number" id="redis_ping_interval" name="redis_ping_interval" required="" lay-verify="number" value="{$Start::$redis_ping_interval nofilter}" autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> Redis 心跳检测间隔时间
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="redis_bug_time" class="layui-form-label setting-label" >
+        <span class="x-red">*</span> 宕机认定范围
+      </label>
+      <div class="layui-input-inline" style="width: 113px;">
+        <input type="number" id="redis_bug_time" name="redis_bug_time" required="" lay-verify="number" value="{$Start::$redis_bug_time nofilter}" autocomplete="off" class="layui-input setting-num"> 
+        <span>-</span>
+        <input type="number" id="redis_bug_nums" name="redis_bug_nums" required="" lay-verify="number" value="{$Start::$redis_bug_nums nofilter}" autocomplete="off" class="layui-input setting-num">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> N 秒内 连续 N次资源连接异常
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="layui-form-item" style="text-align: right;">
+    <hr>
+      <button  class="layui-btn" lay-filter="create" lay-submit="">
+          update
+      </button>
+    </div>
+  </form>
+</div>
+<script>
+layui.use(['form','layer'], function(){
+  $ = layui.jquery;
+  var form = layui.form,layer = layui.layer;
+  form.on('submit(create)', function(data){
+    var json = data.field;
+    console.log(data);
+    $.ajax({
+      url: '{url s='mqsystem/setting' i='UpCFGTrait'}',
+      type: 'put',
+      dataType: 'json',
+      data:json,
+      success:function(json){
+        if(json.State == '000000') {
+          layer.alert(json.Msg, { icon: 6});
+        }else{
+          layer.alert(json.Msg,{icon:5});
+        }
+      },
+      error: function(json){
+        layer.msg('请求异常!');
+      }
+    });
+    return false;
+  });
+});
+</script>
+
+</body>
+
+</html>

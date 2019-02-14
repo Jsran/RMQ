@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=1, initial-scale=1,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="__THEMES__/css/font.css">
+  <link rel="stylesheet" href="__THEMES__/css/common.css">
+  <link rel="stylesheet" href="__THEMES__/css/xadmin.css">
+  <link rel="stylesheet" href="__THEMES__/css/main.css">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__THEMES__/js/xadmin.js"></script>
+</head>
+<body class="x-body layui-anim layui-anim-up">
+<blockquote class="layui-elem-quote r-nav">Message Track （ Timer Nums <span style="color:#FF5722;">{$Tnums}</span> Consume Nums <span style="color:#FF5722;">{$Cnums}</span> ）
+  <a class="layui-btn layui-btn-small reload"  href="javascript:location.replace(location.href);" title="Reload">
+  <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</blockquote>
+<div class="layui-row main-body">
+  <from class="layui-form layui-form-pane layui-col-xs10 layui-col-sm10 layui-col-md10">
+    <div class="layui-form-item">
+      <label class="layui-form-label">Search</label>
+      <div class="layui-input-inline">
+        <select name="type" id='setype'>
+          <option value="a.MsgId" selected="">MessageId</option>
+          <option value="b.topic" >Topic</option>
+          <option value="a.orderid" >OrderId</option>
+        </select>
+      </div>
+      <div class="layui-input-inline">
+        <select name="status" id='sestatus'>
+          <option value="all" selected="">不限状态</option>
+          <option value="0" >尚未消费</option>
+          <option value="1" >消费成功</option>
+          <option value="2" >消费异常</option>
+          <option value="8" >标记删除</option>
+        </select>
+      </div>
+
+      <div class="layui-input-inline"> <input type="text" name="name" id='sename' autocomplete="off" lay-verify="" class="layui-input form-input"></div>
+      <div class="layui-input-inline"><button class="layui-btn site-demo-layim" lay-submit="" lay-filter="reload"><i class="layui-icon layui-icon-search"></i></button></div>
+    </div>
+  </from>
+  <button class="layui-btn add-btn layui-col-xs2 layui-col-sm2 layui-col-md2" onclick="page_show('Topic Create','{url s='mqsystem/message' i='create'}',800,600)">
+    <i class="layui-icon layui-icon-add-1"></i>Message Create
+  </button>
+</div>
+<table class="layui-hide" id="tracklist" lay-filter="tracklist"></table>
+<script id="barDemo" type="text/html">
+  <div class="layui-btn-group">
+    <button class="layui-btn layui-btn-xs" onclick="page_show('Message Show MsgId {{d.MsgId}}','{url s='mqsystem/message' i='show'}?MsgId={{d.MsgId}}',1000,600)"><i class="layui-icon">&#xe629;</i>详情</button>
+    {{# if(d.status == 0) { }}
+    <button class="layui-btn-danger layui-btn layui-btn-xs" onclick="del_data(this,'{{d.MsgId}}')" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+    {{# } else if(d.status == 2 || d.status == 8) { }}
+    <button class="layui-btn-danger layui-btn layui-btn-xs" onclick="recover(this,'{{d.MsgId}}')" href="javascript:;" ><i class="layui-icon">&#xe65c;</i>恢复</button>
+    {{# } else { }}
+    <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn-disabled" ><i class="layui-icon">&#xe61c;</i>虚位</button>
+    {{# } }}
+    
+  </div>
+</script>
+<script id="status" type="text/html">
+  {{# if(d.status == 0) { }}
+  <span style="color:#01AAED;">尚未消费</span>
+  {{# } else if(d.status == 1) { }}
+  <span style="color:#5FB878;">消费成功</span>
+  {{# } else if(d.status == 2) { }}
+  <span style="color:#FF5722;">消费异常</span>
+  {{# } else { }}
+  <span style="color:#FFB800;">标记删除</span>
+  {{# } }}
+</script>
+<script>
+layui.use('table', function(){
+  var table = layui.table,form = layui.form;
+  table.render({
+    elem: '#tracklist',
+    url:'{url s='mqsystem/message' i='track'}',
+    method:'PUT',
+    title: 'Track list',
+    cols: [[
+      {field:'MsgId', title:'MessageId',width:280, unresize: true},
+      {field:'topic', title:'Topic',unresize: true},
+      {field:'orderid', title:'OrderId'},
+      {field:'rid', title:'RedisId'},
+      {field:'TimerId', title:'TimerId',},
+      {field:'create_time', title:'创建时间'},
+      {field:'notify_time', title:'通知时间'},
+      {field:'status', title:'任务状态', width:100,toolbar:'#status'},
+      {fixed:'right', title:'操作',width:140, toolbar: '#barDemo'}
+    ]],
+    id:'retracklist',
+    page: true,
+    limits:[10,15,20,25,30],
+    text:{none: '查询的Message信息列表不存在!'},
+    response: {statusCode: '000000'},
+    parseData: function(res){
+      return typeof res.msg == 'string' ? 
+      { "code" : res.State, "msg" : res.Msg, "count" : 0, "data" : []} :
+      { "code" : res.State, "msg" : 'success', "count" : 100, "data" : res.Msg};
+    }
+  });
+
+  form.on('submit(reload)', function(data){
+    var setype = $('#setype').val();
+    var sename = $('#sename').val();
+    var sestatus=$('#sestatus').val();
+    table.reload('retracklist',
+      {
+        page:{curr: 1},
+        where: {type:setype,status:sestatus,name:sename},
+        method:'PUT'
+      }
+    );
+  });
+  // 子页面过来重载
+  GetValue = function (){table.reload('retracklist',{method:'PUT'});}
+});
+</script>
+<script>
+function del_data(obj,id){
+  layer.confirm('确定要删除么? ',function(index){
+    $.ajax({
+      url: '{url s='mqsystem/restful' i='Home'}',
+      type: 'del',
+      dataType: 'json',
+      data:{
+        MsgId:id
+      },
+      success:function(json){
+        if(json.State == '000000') {
+          //$(obj).parents("tr").remove();
+          layer.msg('delete success!',{ icon:1,time:1000 },function()
+            {
+              GetValue();
+            });
+        }else{
+          layer.alert(json.Msg,{icon:5});
+        }
+      },
+      error: function(json){
+        layer.msg('请求异常!');
+      }
+    });
+  });
+}
+function recover(obj,id){
+  layer.confirm('确定要恢复数据么? ',function(index){
+    $.ajax({
+      url: '{url s='mqsystem/restful' i='Home'}',
+      type: 'recover',
+      dataType: 'json',
+      data:{
+        MsgId:id
+      },
+      success:function(json){
+        if(json.State == '000000') {
+          //$(obj).parents("tr").remove();
+          layer.msg('RECOVER success!',{ icon:1,time:1000 },function()
+            {
+              GetValue();
+            });
+        }else{
+          layer.alert(json.Msg,{icon:5});
+        }
+      },
+      error: function(json){
+        layer.msg('请求异常!');
+      }
+    });
+  });
+
+}
+</script>
+</body>
+</html>

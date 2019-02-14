@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="__THEMES__/css/font.css">
+  <link rel="stylesheet" href="__THEMES__/css/xadmin.css">
+  <link rel="stylesheet" href="__THEMES__/css/shThemeDefault.css">
+  <link rel="stylesheet" href="__THEMES__/css/shCore.css">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__THEMES__/js/xadmin.js"></script>
+
+  <script type="text/javascript" src="__THEMES__/js/shCore.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/js/shBrushPhp.js"></script>
+  <script type="text/javascript"> SyntaxHighlighter.all(); </script> 
+</head>
+
+<body>
+  <div class="x-body">
+  <blockquote class="layui-anim layui-anim-up layui-elem-quote r-nav"><a href="https://github.com/Jsran/jRPHP/blob/master/%23%23%40!%25%5E%26!/I/JScUrl.php" target="_blank">&gt;&gt;&nbsp;JScUrl文件资源&nbsp;&lt;&lt;</a></blockquote>
+    <div class="layui-tab layui-tab-card" lay-filter="test">
+      <ul class="layui-tab-title">
+        <li class="layui-this" lay-id="111">创建消息
+        </li>
+        <li lay-id="222">查询消息</li>
+        <li lay-id="222">删除消息</li>
+        <li lay-id="222">恢复消息</li>
+        <li lay-id="222">接受消息</li>
+      </ul>
+      <div class="layui-tab-content" >
+        <div class="layui-tab-item layui-show">
+<pre class="brush: php">
+&lt;?php
+include 'JScUrl.php';
+// 接口请求地址
+$ApiUrl = '{url s='mqsystem/restful' i='Home'}';
+// 接口请求类型
+$Method = 'PUT';
+$data = array(
+  // 系统参数 业务主题 
+  'topic' => '{$val.topic}',
+  // 系统参数 商户流水号全局唯一
+  'orderid' => '12000xxxx',
+  // 系统参数 业务必要数据
+  'body' => array(
+    // 下列为当前业务必要参数回调后可以正常操作的数据
+    'args1' => 'xxxx1',
+    'args2' => 'xxxx2',
+    'args3' => 'xxxx3',
+    // 系统保留参数 设置后将在指定时间消费 默认延迟为创建消息后 +{$val.delay}/m
+    "notify_time":"2019-10-24 12:00:00"
+  )
+);
+JScUrl::open($ApiUrl,$Method);
+JScUrl::setOption(CURLOPT_TIMEOUT_MS,3000);
+if(!JScUrl::send($data))
+exit(print_r(JScUrl::error()));
+$json = json_decode(JScUrl::retText(),true);
+if($json['State'] != '000000') exit($json['Msg']);
+print_r($json['Msg']);
+
+</pre>  
+        </div>
+        <div class="layui-tab-item">
+        <!-- 查询消息 -->
+<pre class="brush: php">
+&lt;?php
+include 'JScUrl.php';
+// 接口请求地址
+$ApiUrl = '{url s='mqsystem/restful' i='Home'}';
+// 接口请求类型
+$Method = 'GET';
+// 查询方式一 按创建时提供的 topic + orderid 查询
+$data = array('topic' => 'order_recharge_task','orderid' => '1200001');
+// 查询方式二 按创建后接口反馈的消息ID查询
+$data = array('MsgId' => 'e0c943c35c439e050e02c13bfd7b290a');
+
+JScUrl::open($ApiUrl,$Method);
+JScUrl::setOption(CURLOPT_TIMEOUT_MS,3000);
+if(!JScUrl::send($data))
+exit(print_r(JScUrl::error()));
+$json = json_decode(JScUrl::retText(),true);
+if($json['State'] != '000000') exit($json['Msg']);
+print_r($json['Msg']);
+</pre>
+        </div>
+        <div class="layui-tab-item">
+        <!-- 删除消息 -->
+<pre class="brush: php">
+&lt;?php
+include 'JScUrl.php';
+// 接口请求地址
+$ApiUrl = '{url s='mqsystem/restful' i='Home'}';
+// 接口请求类型
+$Method = 'DEL';
+// 仅限 尚未消费 进行删除
+// 删除方式一 按创建时提供的 topic + orderid 查询
+$data = array('topic' => 'order_recharge_task','orderid' => '1200001');
+// 删除方式二 按创建后接口反馈的消息ID查询
+$data = array('MsgId' => 'e0c943c35c439e050e02c13bfd7b290a');
+JScUrl::open($ApiUrl,$Method);
+JScUrl::setOption(CURLOPT_TIMEOUT_MS,3000);
+if(!JScUrl::send($data))
+exit(print_r(JScUrl::error()));
+$json = json_decode(JScUrl::retText(),true);
+if($json['State'] != '000000') exit($json['Msg']);
+print_r($json['Msg']);
+</pre>
+        </div>
+        <div class="layui-tab-item">
+        <!-- 恢复消息 -->
+<pre class="brush: php">
+&lt;?php
+include 'JScUrl.php';
+// 接口请求地址
+$ApiUrl = '{url s='mqsystem/restful' i='Home'}';
+// 接口请求类型
+$Method = 'RECOVER';
+// 仅限 标记删除/消费异常 进行恢复
+// 恢复方式一 按创建时提供的 topic + orderid 查询
+$data = array('topic' => 'order_recharge_task','orderid' => '1200001');
+// 恢复方式二 按创建后接口反馈的消息ID查询
+$data = array('MsgId' => 'e0c943c35c439e050e02c13bfd7b290a');
+JScUrl::open($ApiUrl,$Method);
+JScUrl::setOption(CURLOPT_TIMEOUT_MS,3000);
+if(!JScUrl::send($data))
+exit(print_r(JScUrl::error()));
+$json = json_decode(JScUrl::retText(),true);
+if($json['State'] != '000000') exit($json['Msg']);
+print_r($json['Msg']);
+</pre>
+        </div>
+        <div class="layui-tab-item">
+        <!-- 接受消息 -->
+<pre class="brush: php">
+&lt;?php
+// 回调地址 {$val.callback}
+
+if( $_SERVER['REQUEST_METHOD'] != '{$val.method}') exit('fail');
+parse_str($_SERVER['REDIRECT_QUERY_STRING'] ?? $_SERVER['QUERY_STRING'] ?? null, $args);
+parse_str(file_get_contents('php://input'), $input);
+$args = array_merge($_POST,$input,$args,$_GET);
+
+// $args 中包含了创建消息时 body 内的全部数据
+// 业务逻辑处理 
+// code ... 
+{if $val.backtype == 'string'}
+if($ok)
+{ // 处理成功 返回topic成功的字符串标识
+  exit('{$val.succflag}');
+}else
+{ // 处理失败
+  exit('fail');
+}
+{else if $val.backtype == 'json'}
+if($ok)
+{ // 处理成功 返回topic成功的json标识
+  exit(json_decode(array('State' => '000000','Msg' => 'succ')));
+}else
+{ // 处理失败
+  exit(json_decode(array('State' => '100101','Msg' => 'fail')));
+}
+{else}
+if($ok)
+{ // 处理成功 返回topic成功的xml标识
+  exit("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;
+<ap>
+<State>000000</State>
+<Msg>success</Msg>
+</ap>");
+}else
+{ // 处理失败
+  exit("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;
+<ap>
+<State>100101</State>
+<Msg>fail</Msg>
+</ap>");
+}
+{/if}
+
+</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  layui.use(['form','layer','element','code'], function(){
+    $ = layui.jquery;
+    var form = layui.form
+    ,layer = layui.layer,
+    element = layui.element;
+    //监听Tab切换
+    element.on('tab(test)', function(){
+      console.log(this)
+    });
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=1, initial-scale=1,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="__THEMES__/css/font.css">
+  <link rel="stylesheet" href="__THEMES__/css/common.css">
+  <link rel="stylesheet" href="__THEMES__/css/xadmin.css">
+  <link rel="stylesheet" href="__THEMES__/css/main.css">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__THEMES__/js/xadmin.js"></script>
+  <style type="text/css">
+  .settings{
+      width: 526px;
+      border-right: 1px solid #e6e6e6;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .settings li{ 
+      list-style:none;
+      
+    } 
+    .settings li span{ 
+      display:block; 
+      float:left;
+      line-height:20px;
+      text-align:center;
+      min-height: 30px;
+      line-height: 30px;
+      border: 1px solid #e6e6e6;
+      border-bottom: none;
+      border-right: none;
+       color:#666; 
+    } 
+    .settings li:hover{ 
+      background-color:#f2f2f2;
+    } 
+    .setting-tit{
+      color:#666;
+    }
+    </style>
+</head>
+<body class="x-body layui-anim layui-anim-up">
+<blockquote class="layui-elem-quote r-nav">Redis List
+  <a class="layui-btn layui-btn-small reload"  href="javascript:location.replace(location.href);" title="Reload">
+  <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</blockquote>
+<div class="layui-row main-body">
+  <from class="layui-form layui-form-pane layui-col-xs10 layui-col-sm10 layui-col-md10">
+    <div class="layui-form-item">
+      <label class="layui-form-label">Search</label>
+      <div class="layui-input-inline"> <input type="text" name="sename" id='sename' placeholder="请输入名称" autocomplete="off" lay-verify="required" class="layui-input form-input"></div>
+      <div class="layui-input-inline"><button class="layui-btn site-demo-layim" lay-submit="" lay-filter="reload" ><i class="layui-icon layui-icon-search"></i></button></div>
+    </div>
+  </from>
+  <button class="layui-btn add-btn layui-col-xs2 layui-col-sm2 layui-col-md2" onclick="page_show('Redis Create','{url s='mqsystem/mRedis' i='Create'}',800,600)">
+    <i class="layui-icon layui-icon-add-1"></i>Redis Create
+  </button>
+</div>
+<table class="layui-hide" id="Redislist" lay-filter="Redislist"></table>
+<script id="pointer" type="text/html">
+  <div class="pointer" >{{d.master.host}}:{{d.master.port}}
+  <ul class="settings">
+    <li class="clearfix"style="background-color:#f2f2f2;">
+      <span style="width: 16%"></span>
+      <span style="width: 28%">HOST</span>
+      <span style="width: 15%">PORT</span>
+      <span style="width: 40%">PASS</span>
+    </li>
+    <li class="clearfix">
+      <span style="width: 16%">Master</span>
+      <span style="width: 28%">{{d.master.host}}</span>
+      <span style="width: 15%">{{d.master.port}}</span>
+      <span style="width: 40%">{{d.master.auth}}</span>
+    </li>
+    {{# if(d.slave != undefined){ }}
+    {{#  layui.each(d.slave, function(k, v){ }}
+      <li class="clearfix">
+        <span style="width: 16%">Slave</span>
+        <span style="width: 28%">{{ v.host }}</span>
+        <span style="width: 15%">{{ v.port }}</span>
+        <span style="width: 40%">{{ v.auth }}</span>
+      </li>
+    {{#  }); }}
+    {{#  } }}
+    </ul>
+  </div>
+  
+</script>
+<script id="status" type="text/html">
+  <div class="layui-form">
+    <input type="checkbox" name="state" value="{{d.id}}" lay-skin="switch" lay-filter="state" lay-text="ON|OFF" {{ d.state == 1 ? 'checked' : '' }}>
+  </div>
+</script>
+<script id="barDemo" type="text/html">
+  <div class="layui-btn-group">
+    <button class="layui-btn layui-btn-xs" onclick="page_show('Redis Show id {{d.id}} - {{d.name}}','{url s='mqsystem/mredis' i='show'}?id={{d.id}}',1000,600)"><i class="layui-icon">&#xe629;</i>查看</button>
+    <button class="layui-btn-danger layui-btn layui-btn-xs" onclick="page_show('Redis Edit id {{d.id}} - {{d.name}}','{url s='mqsystem/mredis' i='edit'}?id={{d.id}}',1000,600)"><i class="layui-icon">&#xe642;</i>编辑</button>
+    <button class="layui-btn layui-btn-xs layui-btn-disabled"  onclick="del_data(this,'{{d.id}}')" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+  </div>
+</script>
+<script>
+layui.use(['table','form'], function(){
+  var table = layui.table,form = layui.form;
+  table.render({
+    elem: '#Redislist',
+    url:'{url s='mqsystem/mredis' i='list'}',
+    method:'PUT',
+    title: 'Redis List',
+    cols: [[
+      {field:'name', title:'名称',  unresize: true},
+      {field:'pointer', title:'配置',width:180,'toolbar': '#pointer'},
+      {field:'status', title:'状态',templet: '#status'},
+      {field:'push', title:'入栈唯一',},
+      {field:'repush', title:'入栈重复'},
+      {field:'pop', title:'出栈唯一'},
+      {field:'repop', title:'出栈重复'},
+      {field:'rep', title:'入栈重复比',toolbar:'<div>{{d.rep}}%</div>'},
+      {field:'reps', title:'出栈重复比',toolbar:'<div>{{d.reps}}%</div>'},
+      {fixed:'right', title:'操作',width:200, toolbar: '#barDemo'}
+    ]],
+    id:'reTopiclist',
+    page: true,
+    limits:[10],
+    text:{none: '查询的Redis信息列表不存在!'},
+    response: {statusCode: '000000'},
+    parseData: function(res){
+      return typeof res.msg == 'string' ? 
+      { "code" : res.State, "msg" : res.Msg, "count" : 0, "data" : []} :
+      { "code" : res.State, "msg" : 'success', "count" : res.Msg.length, "data" : res.Msg};
+    }
+  });
+  form.on('switch(state)', function(obj){
+    // ajax 请求更新状态
+    var state =this.checked ? '1' : '0';
+    $.ajax({
+      type: 'put',
+      url: '{url s='mqsystem/mredis' i='state'}',
+      data: {
+        "state":state,
+        "id":this.value
+      },
+      dataType:'json',
+      beforeSend:function(){
+        layer.msg('正在更新状态，请稍候',{icon: 16,time:false,shade:0.8});
+      },
+      success: function(json){
+        if(json.State =='000000'){
+          layer.msg('状态重新配置成功！');
+        }else{
+          console.log(json);
+          layer.msg(data.Msg);
+        }
+      },
+      error: function(json){
+        console.log(json);
+        layer.msg(data.Msg);
+      }
+    });
+  });
+  form.on('submit(reload)', function(data){
+    var sename = $('#sename').val();
+    table.reload('reTopiclist',
+      {
+        page:{curr: 1},
+        where: {name:sename},
+        method:'PUT'
+      }
+    );
+  });
+  GetValue = function (){table.reload('reTopiclist',{page:{curr: 1},method:'PUT'});}
+});
+</script>
+<script>
+function del_data(obj,id){
+      // layer.confirm('do you confirm the deletion action? ',function(index){
+      //   var delId = $(obj).parent().parent('tr').find('.redis-id').attr('data-id');
+      //   //发异步删除数据
+      //   $.ajax({
+      //     url: 'user.json',
+      //     type: 'post',
+      //     dataType: 'json',
+      //     data:{
+      //       id:delId
+      //     },
+      //     success:function(json){
+      //      $(obj).parents("tr").remove();
+      //      layer.msg('delete success!',{ icon:1,time:1000 });
+      //     }
+      //   });
+      // });
+}
+function master_info(obj,id)
+{
+
+}
+</script>
+</body>
+</html>

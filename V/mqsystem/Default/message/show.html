@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="__THEMES__/css/font.css">
+  <link rel="stylesheet" href="__THEMES__/css/common.css">
+  <link rel="stylesheet" href="__THEMES__/css/xadmin.css">
+  <link rel="stylesheet" href="__THEMES__/css/main.css">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__THEMES__/js/xadmin.js"></script>
+  <style>
+	.item-body{
+		width: 950px;
+		margin: auto;
+		margin-top: 20px;
+	}
+	.items{
+		float: left;
+		padding: 10px 0px;
+		background: #f2f2f2;
+		padding-left: 15px;
+	}
+	.item-l{
+		width: 130px;
+	}
+	.item-r{
+		width: 790px;
+	}
+	.item-ul{
+		border-left: 1px solid #e6e6e6;
+		border-right: 1px solid #e6e6e6;
+	}
+	.item-ul span{
+		float: left;
+		padding-left: 15px;
+		font-size: 13px;
+		color: #666;
+
+	}
+	.item-line{
+		border-bottom: 1px solid #e6e6e6;
+		padding: 8px 0px;
+	}
+	.item-line span:nth-child(odd){
+		width: 130px;
+	}
+	.item-line span:nth-child(even){
+		width: 774px;
+	}
+	.item-ul div:nth-child(even){
+		background: #EFEFEF;
+	}
+</style>
+</head>
+
+<body class="x-body layui-anim layui-anim-up">
+<blockquote class="layui-elem-quote r-nav">Message Show
+  <a class="layui-btn layui-btn-small reload"  href="javascript:location.replace(location.href);" title="刷新">
+    <i class="layui-icon" style="line-height:30px">ဂ</i>
+  </a>
+</blockquote>
+<div class="item-body">
+	<div class="item-tit clearfix">
+		<div class="items item-l">条目</div>
+		<div class="items item-r">值</div>
+	</div>
+	<div class="item-ul">
+		<div class="item-line clearfix">
+			<span>消息编号</span>
+			<span>{$val.MsgId}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>TopicId</span>
+			<span>{$val.tid}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>RedisId</span>
+			<span>{$val.rid}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>TimerId</span>
+			<span>{$val.TimerId}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>商户流水</span>
+			<span>{$val.orderid}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>写入次数</span>
+			<span>{$val.put}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>通知次数</span>
+			<span>{$val.notify}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>消息状态</span>
+			<span><label style="color:{if $val.status == 0}#01AAED;">尚未消费{elseif $val.status == 1}#5FB878;">消费成功{elseif $val.status == 2}#FF5722;">消费异常{else}#FFB800;">标记删除{/if}</label></span>
+		</div>
+		<div class="item-line clearfix">
+			<span>创建时间</span>
+			<span>{$val.create_time}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>更新时间</span>
+			<span>{$val.update_time}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>通知时间</span>
+			<span>{$val.notify_time}</span>
+		</div>
+		<div class="item-line clearfix">
+			<span>消息内容</span>
+			<span><pre id='body'></pre>
+			</span>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('#body').html(JSON.stringify(JSON.parse('{json_encode($val.body,true)}'), null, 4));
+</script>
+</body>
+</html>

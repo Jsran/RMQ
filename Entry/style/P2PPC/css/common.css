@@ -1,0 +1,474 @@
+@charset "utf-8";
+/*
+ * @url http://www.baicai.com
+ */
+
+/*
+ * 将具有默认margin和padding的标记置零
+ * @overlay *
+ * @desc	所有标记的margin、padding都在使用时具体定义
+ */
+*{margin:0;padding:0;}
+/*
+ * 修正IE5.x和IE6的斜体溢出bug
+ * @bugfix
+ * @css-for    IE 5.x/Win, IE6
+ */
+* html body{
+overflow: visible;
+}
+* html iframe, * html frame{
+overflow: auto;
+}
+* html frameset{
+overflow: hidden;
+}
+i{ font-style: normal; color: #ef7d00; padding: 0 2px; }
+/* @group 常用标签 */
+/*
+ * 基本标签默认样式取消
+ * @overlay HTML标签
+ * @desc 取消基本标签默认样式,防止不同浏览器显示效果不同
+ * @Prop text-align:center; 解决不同浏览器剧中问题
+ */
+body, button, input, select, textarea{font:12px/1.5 "微软雅黑";}
+body{color:#000;background:#fff;font:12px/22px;text-align:center;overflow-y: scroll;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,tr{margin:0;padding:0; font-family:"微软雅黑"; }
+input,select{font-size:12px;vertical-align:middle;font-family:"微软雅黑";}
+table{border-collapse: separate;border-spacing: 1px;border-color: #ddd;}
+/*
+ * 设置内容左对齐
+ * @overlay div
+ * @desc 恢复因BODY设置剧中产生的继承
+ */
+body div{text-align:left;}
+input::-webkit-input-placeholder { 
+color: #999; 
+-webkit-transition: color.5s; 
+} 
+input:focus::-webkit-input-placeholder, input:hover::-webkit-input-placeholder { 
+color: #c2c2c2; 
+-webkit-transition: color.5s; 
+} 
+/*
+ * 标签属性
+ * @overlay textarea,input
+ * @desc 强制输入时内容超出时换行
+ */
+textarea,input{	word-wrap:break-word;word-break:break-all;padding:0px;}
+/*
+ * 清除ul列表标记的样式
+ * @overlay  li
+ * @desc	ul列表更多的用在不需要列表前置符号的样式里
+ */
+li{list-style-type:none;}
+/*
+ * 定义图片边框
+ * @overlay img
+ * @desc	当图片作为链接内容被填充时，会有默认边框出现，重定义掉
+ */
+img{border:0 none;}
+/*
+ * 定义默认的链接样式
+ * @overlay a
+ * @desc	仅仅是作为默认样式提供，可以在各自的实例中覆盖掉
+ */
+a:link, a:visited{
+color:#000;
+text-decoration: none;
+}
+a:hover{
+color:#F60;
+text-decoration: none;
+}
+/*    去掉链接的虚线框     */
+/*  	a {outline: none;  	a {star:expression(this.onFocus=this.blur()); */ 
+/*
+ * 定义H系列标签
+ * @overlay HN
+ * @desc  覆盖H系列标签默认属性
+ */
+h1{ font-size:24px;}
+h2{ font-size:20px;}
+h3{ font-size:18px;}
+h4{ font-size:16px;}
+h5{ font-size:14px;}
+h6{ font-size:12px;}
+/* @end */
+/* @group 通用属性定义 */
+/*  鼠标样式 */
+.pointer{cursor:pointer;}
+/* 取消边框 */
+.NoBorder{border:0 none ;}
+/*  文本对齐方式  */
+.t-l{text-align:left;}
+.t-c{text-align:center;}
+.t-r{text-align:right;}
+/*
+ * 字母和单词换行设置
+ * @class Break 强制内容换行
+ * @class Nobreak 强制内容不换行
+ */
+.Break{word-break:break-all;word-wrap:break-word;}
+.Nobreak{word-break:keep-all;word-wrap:normal;}
+/*     浮动定义   */
+.FL{float:left;}
+.FR{float:right;}
+/*  定义文本下划线  */
+.UnLine{text-decoration:underline;}
+.DisunLine{text-decoration:none;}
+/*    定位关系     */
+.absolute{position:absolute;}
+.relative{position:relative;}
+
+/* 通用容器 */
+.wrapper{
+clear: both;
+overflow: hidden;
+}
+/* @group 隐藏元素 */
+
+/*
+ * 隐藏元素
+ * @class o-hidden
+ * @desc 当元素内容内容超出元素height 或 width 时，隐藏之
+ */
+.o-hidden{overflow:hidden;}
+/*
+ * 隐藏元素
+ * @class invisible
+ * @desc	visibility可以隐藏元素，但是还是会在布局中占位
+ */
+.invisible{
+visibility:hidden;
+}
+
+/*
+ * 从页面布局上隐藏元素
+ * @class hidden
+ * @desc	从布局上隐藏元素
+ */
+.hidden{
+display: none;
+}
+.block {display:block;}
+/* @end */
+/*
+ * 清理元素
+ * @class clear
+ * @desc	清理浮动元素,当浮动换行时后面元素不希望浮动，添加此属性，防止IE BUG
+ */
+ .clear{clear:both; height:0px; width:100%; font-size:1px; line-height:0px; visibility:hidden; overflow:hidden;}
+/*   常用样式定义  */
+/*
+ * 边框定义
+ * @Pro 由大写B开头,表示系统公用边框样式
+ * @desc 常用样式可更具一个项目的样式使用频率重新定义,扩展
+ */
+/*  边框宽度  (BW开头)    */
+.BW1{ border-width:1px;}
+.BW2{ border-width:2px;}
+.BW3{ border-width:3px;}
+.BW4{ border-width:4px;}
+.BW5{ border-width:5px;}
+/*    边框样式 (Bs开头)    */
+.BsS{ border-style:solid;}
+.BsD{ border-style:dotted;}
+/*
+ * 宽度定义
+ * @Pro 由小写C开头,表示color
+ * @desc 常用样式可更具一个项目的样式使用频率重新定义,扩展
+ */
+.W1200{width:1200px; margin: 0 auto;}
+/*
+ * 颜色功能定义
+ * @Pro 由小写C开头,表示color
+ * @desc 常用样式可更具一个项目的样式使用频率重新定义,扩展
+ */
+.cRed{color: #F00;}
+.cWhite{color: #FFF;}
+.cGreen{color:#0F0;}
+.cGray{color: #888;}
+.cBlue{ color: #00F;}
+.cblack{ color:#000;}
+.lan{color:#1898f4 !important;}
+/*  定义某个项目常用颜色  */
+.corg{color:#ef7d00;}
+.c001{color:#4e4e4e}
+.bc001{background-color:#fff}
+.bc002{background-color:#fbfbfb}
+.bc003{background-color:#ef7d00}
+.bg-hui{background: #f4f3f8;}
+.bg-bai{ background: #fff; }
+.bg-lan{background: #1898f4 !important}
+/*
+ * 定义字体样式
+ * @Pro 由大写字母F开头,表示FONT
+ * @desc 常用样式可更具一个项目的样式使用频率重新定义,扩展
+ */
+/*  字体样式 */
+.FB{font-weight:bold;}
+.FN{ font-weight:normal;}
+.FI{font-style:italic;}
+/*  字体大小  */
+.F10{font-size:10px;}
+.F11{font-size:11px;}
+.F12{font-size:12px;}
+.F13{font-size:13px;}
+.F14{font-size:14px;}
+.F16{font-size:16px;}
+.F18{font-size:18px;}
+/*
+ * 定义间距,上下2个DIV间距
+ * @Pro 使用DIVH开头.
+ * @desc 上下DIV有间距时使用,尽量不使用margin/padding值,防止不同浏览器出现BUG,
+ *	     使用下面属性可兼容大多浏览器.
+ */
+.DivH5,.DivH10,.DivH15,.DivH20,.DivH25,.DivH30,DivH1,.DivH40{width:100%;overflow:hidden;}
+.DivH1{ height:1px;}
+.DivH5{height:5px;}
+.DivH10{height:10px;}
+.DivH15{height:15px;}
+.DivH20{height:20px;}
+.DivH25{height:25px;}
+.DivH30{height:30px;}
+.DivH40{height:40px;}
+/*
+ * 定义行高
+ * @class LH
+ * @desc 使用较少,主要定义line-height属性
+ */
+.LH1{ line-height:1px;  }
+.LH10{ line-height:10px; }
+.LH15{ line-height:15px; }
+.LH18{ line-height:18px; }
+.LH20{ line-height:20px; }
+.LH25{ line-height:25px;}
+.LH30{ line-height:30px;}
+.LH35{ line-height:35px;}
+
+/*
+ * 标题样式定义
+ * @Pro PTit
+ * @desc 在定义p标签元素或其它元素时,需要同时定义行高和高度,一般使用在标题显示中.
+ */
+
+.PTit25,.PTit20,.PTit18,.PTit30,.PTit,.PTit1,.PTit22{	width:100%;	overflow:hidden;}
+.PTit30{line-height:30px;height:30px;}
+.PTit25{line-height:25px;height:25px;}
+.PTit22{line-height:22px;height:22px;}
+.PTit20{line-height:20px;height:20px;}
+.PTit18{line-height:18px;height:18px;}
+.PTit15{line-height:15px;height:15px;}
+.PTit10{line-height:10px;height:10px;}
+.PTit1{line-height:1px;height:1px;}
+
+/*
+ * MORE更多样式设计
+ * @Pro MORE
+ * @desc 显示在右侧更多/MORE样式,可根据需求扩展
+ */
+
+.More{text-align:right;position:absolute; top:0; right:3px;}
+.MoreR5{ position:absolute; top:0px; right:3px; font:12px normal; }
+.MoreR15{ position:absolute; top:0px; right:15px; font:12px normal;}
+.B-right{ border-right: 1px solid #ddd; margin-left: -1px; }
+.B-left{ border-left: 1px solid #ddd;  }
+.B-top{border-top: 1px solid #ddd; margin-top: -1px;}
+.B-bottom{border-bottom: 1px solid #ddd; margin-top: -1px;}
+.B-border{border: 1px solid #ddd;}
+/*
+ * 普通列表样式定义
+ * @desc 文章列表样
+ * @use  一般列表使用,ul li列表
+ */
+.ArtList,.ArtList25,.ArtList22,.ArtList24{ width:100%; overflow:hidden; margin:0 auto;}
+.ArtList li{ width:100%; height:20px; line-height:20px; overflow:hidden;}
+.ArtList25 li{ width:100%; height:25px; line-height:25px; overflow:hidden;}
+.ArtList24 li{ width:100%; height:24px; line-height:24px; overflow:hidden;}
+.ArtList22 li{ width:100%; height:22px; line-height:22px; overflow:hidden;}
+
+/* @end  */
+/*
+ * 圆角定义
+*/
+.cirle5{-moz-border-radius: 5px; /* Firefox */  -webkit-border-radius: 5px; /* Safari 和 Chrome */  border-radius: 5px; /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */}
+.cirle{-moz-border-radius: 50%; /* Firefox */  -webkit-border-radius: 50%; /* Safari 和 Chrome */  border-radius: 50%; /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */}
+/* @end  */
+/*
+ * css3缓慢
+*/
+.trs-bg{transition: background 0.5s;-moz-transition: background 0.5s; /* Firefox 4 */-webkit-transition: background 0.5s; /* Safari 和 Chrome */	-o-transition: background 0.5s; /* Opera */	}
+.trs-wd{transition: width 0.5s;-moz-transition: width 0.5s; /* Firefox 4 */-webkit-transition: width 0.5s; /* Safari 和 Chrome */-o-transition: width 0.5s; /* Opera */}
+a,.trs-color{transition: color 0.5s;-moz-transition: color 0.5s; /* Firefox 4 */-webkit-transition: color 0.5s; /* Safari 和 Chrome */	-o-transition: color 0.5s; /* Opera */}
+/* @end  */
+/*
+ * css3阴影
+*/
+.b-sha{ -moz-box-shadow:2px 2px 3px #8A8A8A;/*firefox*/
+ 		-webkit-box-shadow:2px 2px 3px#8A8A8A;/*webkit*/
+  		box-shadow:2px 2px 3px #8A8A8A;/*opera或ie9*/}
+.b-sha2{ -moz-box-shadow:1px 1px 3px rgb(219, 219, 219);/*firefox*/
+ 		-webkit-box-shadow:1px 1px 3px rgb(219, 219, 219);/*webkit*/
+  		box-shadow:1px 1px 3px rgb(219, 219, 219);/*opera或ie9*/}
+.b-hong{-moz-box-shadow:0px 4px 0px #cd462f;/*firefox*/
+ 		-webkit-box-shadow:0px 4px 0px #cd462f;/*webkit*/
+  		box-shadow:0px 4px 0px #cd462f;/*opera或ie9*/}
+.b-lan{-moz-box-shadow:0px 4px 0px #0d80ce;/*firefox*/
+ 		-webkit-box-shadow:0px 4px 0px #0d80ce;/*webkit*/
+  		box-shadow:0px 4px 0px #0d80ce;/*opera或ie9*/}
+/* @end  */
+/*
+ * css3透明度
+*/
+.fllter{filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;}
+/* @end  */
+.high-50{ height: 50px; }
+.high-20{ height: 20px; }
+/*  header  */
+.header{height: 130px; }
+.header-top{ width: 100%; height: 38px; background: #F8F8F8; border-bottom: 1px solid #e7ebed }
+.header-l{ line-height: 38px; }
+.header-r ul li{ float: left; width: 88px; text-align: center; line-height: 38px; font-size: 14px; border-right: 1px solid #e7ebed; }
+.header-r ul li a{ color: #5c6066 }
+.header-r ul li a:hover{ color: #ef7d00; }
+.header-r ul li.noborder{ border:none; }
+.help-btn{color: #fff !important ; display: inline-block; border:none; background: #ef7d00; width: 80px; height: 24px; line-height: 24px; }
+.help-btn:hover{ background: #ddd ; color: #ef7d00 !important; text-decoration: none }
+.header-bottom{ position: relative; height: 92px; z-index: 1;background: #fff }
+.logo{ width: 403px; height: 66px;margin-top: 10px; }
+.nav { height: 92px;position: relative; }
+.nav ul li{ float: left; font-size: 17px; height: 42px; line-height: 40px; margin-top: 40px; margin-right: 15px; margin-left: 25px;  }
+.nav ul li a{ text-decoration: none; }
+.nav-border{ height: 2px; width: 0px; background: #ef7d00; display: block; }
+.nav ul li.active a{ color: #ef7d00;}
+.nav ul li.active a span.nav-border{ width: 68px;}
+/* footer */
+.footer{ padding: 30px 0; }
+.footer-left{ width: 800px; margin-right: -1px; border-right: 1px solid #ddd; }
+.link{ line-height: 30px; font-size: 14px;color: #888}
+.link a{ padding: 0 10px; color: #888  }
+.link a:hover{ color: #f18f26 }
+.footer-right{ width: 400px; padding-bottom: 30px; }
+.footer-right{ font-size: 14px; }
+.footer-right i{ font-size: 24px; font-weight: bold; line-height: 40px;}
+.footer-bottom{ padding-top: 30px; }
+/*banner2*/
+.banner2{ width: 100%; height: 120px; }
+.banner2 img{ width: 100%; height:100%; }
+div.fanye { padding: 4px 6px;  margin: 3px; text-align: center; width:970px; margin:20px auto 50px;clear:both;}
+div.fanye a { font-size: 14px; border: #dedfde 1px solid; padding:3px 9px;  color: #888; margin-right: 5px; text-decoration: none;}
+div.fanye a:hover {	border: #1898f4 1px solid;  background-color: #1898f4; color: #fff}
+div.fanye span{ background: #1898f4; color: #fff; padding: 3px 9px; border: 1px solid #1898f4;margin-right: 5px;}
+.izl-rmenu{
+	       margin-right: 0;
+	       width: 82px;
+	       position: fixed;
+	       right: 2px;
+	       top: 52%;
+	       -webkit-box-shadow: #DDD 0px 1px 5px;
+	       -moz-box-shadow: #DDD 0px 1px 5px;
+	       box-shadow: #DDD 0px 1px 5px;
+	       z-index:999;
+}
+.izl-rmenu .consult{    
+	background-image: url(../images/consult_icon.gif);
+    background-repeat: no-repeat;
+    background-position: center -77px;
+    display: block;
+    height: 76px;
+    width: 82px;
+}
+.izl-rmenu .consult .phone {
+    background-color: rgb(247,247,255);
+    position: absolute;
+    width: 160px;
+    left: -160px;
+    top: 0px;
+    line-height: 73px;
+    color: #000;
+    font-size: 18px;
+    text-align: center;
+    display: none;
+    box-shadow: #DDD -1px 1px 4px;
+}
+.izl-rmenu a.consult:hover .phone{display:inline !important;}
+.izl-rmenu .cart {
+    background-image: url(../images/consult_icon.gif);
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    display: block;
+    height: 16px;
+    width: 16px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #45BDFF;
+    text-align: center;
+    padding-top: 15px;
+    padding-right: 18px;
+    padding-bottom: 47px;
+    padding-left: 48px;
+}
+.izl-rmenu a.cart:hover .pic{display:block;}
+.izl-rmenu .btn_top {
+    background-image: url(../images/float_top.gif);
+    background-repeat: no-repeat;
+    background-position: center top;
+    display: block;
+    height: 39px;
+    width: 82px;
+    -webkit-transition: all 0s ease-in-out;
+    -moz-transition: all 0s ease-in-out;
+    -o-transition: all 0s ease-in-out;
+    transition: all 0s ease-in-out;
+}
+.izl-rmenu .btn_top:hover {
+	background-image: url(../images/float_top.gif);
+	background-repeat: no-repeat;
+	background-position: center bottom;
+}
+.izl-rmenu .cart .pic {
+	display:none;
+    position: absolute;
+    left: -160px;
+    top: 65px;
+    width: 160px;
+    height: 160px;
+    background:url(../images/weixin.jpg);
+}
+#udesk-feedback-tab {
+    position: fixed;
+    right: 2px;
+    top: 52%;
+    margin-top: -76px;
+    -webkit-box-shadow: #DDD 0px -1px 5px;
+    -moz-box-shadow: #DDD 0px -1px 5px;
+    box-shadow: #DDD 0px -1px 5px;
+    z-index: 10000;
+    cursor: pointer;
+    background-image: url(../images/consult_icon.gif);
+    background-repeat: no-repeat;
+    background-position: center top;
+    display: block;
+    height: 76px;
+    width: 82px;
+    background-color: #FFF!important;
+    z-index:999;
+}
+.footer-left{
+    width:750px;
+    margin-top: 35px;
+}
+.footer-right{
+    width: 450px;
+}
+.clearfix:before,.clearfix:after{
+    display: block;
+    content:"";
+}
+.clearfix:after{
+    clear: both;
+}

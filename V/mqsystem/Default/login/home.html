@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>后台登录</title>
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="__THEMES__/css/common.css">
+  <link rel="stylesheet" type="text/css" href="__THEMES__/css/login.css">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/js/md5.min.js"></script>
+</head>
+<body>
+  <div class="top_div"></div>
+  <div class="main-box" >
+    <div class="login-logo">
+      <div class="tou"></div>
+      <div class="initial_left_hand" id="left_hand"></div>
+      <div class="initial_right_hand" id="right_hand"></div>
+    </div>
+    <form>
+      <p class="userpart">
+        <span class="u_logo"></span>
+        <input class="ipt" type="text" placeholder="请输入用户" value="admin" id="username">
+      </p>
+      <p class="pwdpart">
+        <span class="p_logo"></span>
+        <input class="ipt" id="password" type="password" placeholder="请输入密码" value="123123abcDE">
+      </p>
+      <div class="loginpart">
+        <p><a class="login-btn" href="javascript:void(0)" id="login">登录</a></p>
+      </div>
+    </form>
+  </div>
+  <script type="text/javascript">
+  $(function(){
+    $("#login").click(function(){
+      var datas = {
+        user:$("#username").val(),
+        pass:md5($("#password").val())
+      }
+      $.ajax({
+        type:'PUT',
+        url:"{Url s='mqsystem/login' i='sign'}",
+        data:datas,
+        dataType:'json',
+        success:function(json){
+          if(json.State=='000000'){
+            window.location.href="{Url s='mqsystem/main' i='home'}";
+          }else
+          {
+            alert(json.Msg);
+          }
+        },
+        error:function(){
+          alert("登录出错了！");
+        }
+      });
+    });
+    $("#password").focus(function(){
+      $("#left_hand").animate({
+        left: "150",
+        top: " -38"
+      },{step: function(){
+        if(parseInt($("#left_hand").css("left"))>140){
+            $("#left_hand").attr("class","left_hand");
+        }
+      }}, 2000);
+      $("#right_hand").animate({
+        right: "-64",
+        top: "-38px"
+      },{step: function(){
+        if(parseInt($("#right_hand").css("right"))> -70){
+          $("#right_hand").attr("class","right_hand");
+        }
+      }}, 2000);
+    });
+    $("#password").blur(function(){
+      $("#left_hand").attr("class","initial_left_hand");
+      $("#left_hand").attr("style","left:100px;top:-12px;");
+      $("#right_hand").attr("class","initial_right_hand");
+      $("#right_hand").attr("style","right:-112px;top:-12px");
+    });
+  });
+</script>
+</body>
+</html>

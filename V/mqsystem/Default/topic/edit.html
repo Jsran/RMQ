@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="__THEMES__/css/font.css">
+  <link rel="stylesheet" href="__THEMES__/css/common.css">
+  <link rel="stylesheet" href="__THEMES__/css/xadmin.css">
+  <link rel="stylesheet" href="__THEMES__/css/main.css">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__THEMES__/js/xadmin.js"></script>
+</head>
+
+<body class="x-body layui-anim layui-anim-up">
+<blockquote class="layui-elem-quote r-nav">Topic Create
+  <a class="layui-btn layui-btn-small reload"  href="javascript:location.replace(location.href);" title="刷新">
+    <i class="layui-icon" style="line-height:30px">ဂ</i>
+  </a>
+</blockquote>
+  <form class="layui-form">
+    <div class="layui-form-item">
+      <label for="name" class="layui-form-label">
+        <span class="x-red">*</span> 业务名称
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="name" name="name" required="" lay-verify="name" value="{$val.name}" placeholder="请输入名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="topic" class="layui-form-label">
+        <span class="x-red">*</span> Topic
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="topic" name="topic" required="" lay-verify="required"  readonly=? value="{$val.topic}" placeholder="请输入Topic" 
+          autocomplete="off" class="layui-input">
+      </div>
+       <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> Topic下尚有未消费的任务，禁止修改
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="callback" class="layui-form-label">
+        <span class="x-red">*</span> 回调地址
+      </label>
+      <div class="layui-input-inline" style="width: 350px;">
+        <input type="text" id="callback" name="callback" required="" lay-verify="url" value="{$val.callback}" placeholder="http|https" value=''
+          autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+          <span class="x-red">*</span> 回调通知地址 http|https
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="delay" class="layui-form-label">
+        <span class="x-red">*</span> 延迟时间
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="delay" name="delay" required="" lay-verify="number" value='{$val.delay}'
+          autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 默认延迟时间 n/s
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="method" class="layui-form-label">
+        <span class="x-red">*</span> 交互方式
+      </label>
+      <div class="layui-input-inline">
+        <select name="method">
+          <option value='NOTIFY'{if $val.priority == 'NOTIFY'} selected{/if}>NOTIFY</option>
+          <option value='PUT'{if $val.priority == 'PUT'} selected{/if}>PUT</option>
+          <option value='POST'{if $val.priority == 'POST'} selected{/if}>POST</option>
+        </select>
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 回调通知请求方式 NOTIFY|PUT|POST
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="timeout" class="layui-form-label">
+        <span class="x-rtimeouted">*</span> 超时时间
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="timeout" name="timeout" required="" lay-verify="number" value='{$val.timeout}'
+          autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 默认延迟时间 n/ms
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="backtype" class="layui-form-label">
+        <span class="x-red">*</span> 验证类型
+      </label>
+      <div class="layui-input-inline">
+        <select name="backtype" lay-filter="backtype">
+          <option value='string'{if $val.backtype == 'string'} selected{/if}>STRING</option>
+          <option value='json'{if $val.backtype == 'json'} selected{/if}>JSON</option>
+          <option value='xml'{if $val.backtype == 'xml'} selected{/if}>XML</option>
+        </select>
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 回调通知请求接收方反回的内容格式
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="succflag" class="layui-form-label">
+        <span class="x-red">*</span> 成功标识
+      </label>
+      <div class="layui-input-inline" style="width: 350px;">
+        <input type="text" id="succflag" name="succflag" required="" lay-verify="required" placeholder="success" value='{$val.succflag}'
+          autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 对内容进行标识验证
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="priority" class="layui-form-label">
+        <span class="x-red">*</span>消费等级
+      </label>
+      <div class="layui-input-inline">
+        <select name="priority">
+          <option value='1'{if $val.priority == 1} selected{/if}>高</option>
+          <option value='2'{if $val.priority == 2} selected{/if}>中</option>
+          <option value='3'{if $val.priority == 3} selected{/if}>低</option>
+        </select>
+      </div>
+      <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 优先级越高越快被消费</div>
+    </div>
+    <div class="layui-form-item">
+      <label for="email" class="layui-form-label">
+        <span class="x-red">*</span>异常通知
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="email" name="email" required="" lay-verify="email" value="{$val.email}" placeholder="js@jsran.cn"
+          autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 回调接口出现问题，dns解析超时,接口超时，302错误邮件通知
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="createor" class="layui-form-label">
+        <span class="x-red">*</span> 创建者
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="createor" name="createor" required="" lay-verify="required" value="{$val.createor}" placeholder="jsran"
+          autocomplete="off" class="layui-input">
+      </div>
+      <div class="layui-form-mid layui-word-aux">
+        <span class="x-red">*</span> 业务生产、消费人员
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label for="L_repass" class="layui-form-label">
+      </label>
+      <input type="hidden" name="id" value="{$val.id}"> 
+      <button  class="layui-btn" lay-filter="update" lay-submit="">
+          update
+      </button>
+    </div>
+  </form>
+</div>
+<script>
+layui.use(['form','layer'], function(){
+  $ = layui.jquery;
+  var form = layui.form,layer = layui.layer;
+
+  form.verify({
+    name: function(value){
+      if(value.length > 24 || value.length < 1){
+        return '名称长度必须在24个字符以内!';
+      }
+    }
+  });
+
+  form.on('submit(update)', function(data){
+    var json = data.field;
+    console.log(data);
+    $.ajax({
+      url: '{url s='mqsystem/topic' i='edit'}',
+      type: 'put',
+      dataType: 'json',
+      data:json,
+      success:function(json){
+        console.log(data);
+        if(json.State == '000000') {
+          layer.alert(json.Msg, { icon: 6},function() {
+            // 关闭当前frame;
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+            // 重载list
+            parent.GetValue();
+          });
+        }else{
+          layer.alert(json.Msg,{icon:5});
+        }
+      },
+      error: function(json){
+        layer.msg('请求出错!');
+      }
+    });
+    return false;
+  });
+  form.on('select(backtype)', function(data){
+     var sel_id = data.value;
+     console.log(sel_id);
+    if(sel_id=="string"){
+        form.render();
+    }else{
+        
+    }
+  });
+});
+</script>
+
+</body>
+
+</html>

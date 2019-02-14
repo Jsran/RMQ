@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=1, initial-scale=1,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="__THEMES__/css/font.css">
+  <link rel="stylesheet" href="__THEMES__/css/common.css">
+  <link rel="stylesheet" href="__THEMES__/css/xadmin.css">
+  <link rel="stylesheet" href="__THEMES__/css/main.css">
+  <script type="text/javascript" src="__THEMES__/js/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="__THEMES__/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__THEMES__/js/xadmin.js"></script>
+</head>
+<body class="x-body layui-anim layui-anim-up">
+<blockquote class="layui-elem-quote r-nav">Redis Create
+  <a class="layui-btn layui-btn-small reload"  href="javascript:location.replace(location.href);" title="刷新">
+    <i class="layui-icon" style="line-height:30px">ဂ</i>
+  </a>
+</blockquote>
+<form class="layui-form form-redis" action="/asd.php">
+  <div class="layui-form-item">
+    <label class="layui-form-label" style="width:90px">
+      <span class="x-red">*</span>Name
+    </label>
+    <div class="layui-input-inline">
+      <input type="text" id="name" name="name"  lay-verify="required"
+      autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="form-main">
+    <div class="layui-form-item main-server">
+      <div class="layui-inline ">
+        <label class="layui-form-label" style="width:90px">
+          <span class="x-red">*</span>
+          MasterHost
+        </label>
+        <div class="layui-input-inline" style="width:160px">
+          <input type="text" id="host" name="info[master][host]" value='127.0.0.1' lay-verify="required"
+        autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label" style="width:20px">Port</label>
+        <div class="layui-input-inline" style="width: 60px">
+          <input type="text" id="port" name="info[master][port]" value='6379' lay-verify="number"
+        autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label" style="width:20px">Auth</label>
+        <div class="layui-input-inline">
+          <input type="password" id="auth" name="info[master][auth]" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-mid add-sub layui-word-aux" >
+          <i class="layui-icon pointer " id="addSub">&#xe61f;</i>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label for="create" class="layui-form-label">
+    </label>
+    <button type="button" class="layui-btn" lay-filter="add" lay-submit="">
+      Create
+    </button>
+  </div>
+</form>
+<script>
+layui.use(['form','layer'], function(){
+  $ = layui.jquery;
+  var form = layui.form,layer = layui.layer;
+  //监听提交
+  form.on('submit(add)', function(data){
+    // console.log(data.field);
+    $.ajax({
+      url: '{url s='mqsystem/mredis' i='create'}',
+      type: 'put',
+      dataType: 'json',
+      data:data.field,
+      success:function(json){
+        if(json.State == '000000') {
+          layer.alert(json.Msg, { icon: 6},function() {
+            // 关闭当前frame;
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+            // 重载list
+            parent.GetValue();
+          });
+        }else{
+          layer.alert(json.Msg,{icon:5});
+        }
+      },
+      error: function(json){
+        layer.msg('请求异常!');
+      }
+    });
+  });
+});
+</script>
+<script type="text/javascript">
+  $("#addSub").click(function(){
+      $(".form-main").append('<div class="layui-form-item sec-server layui-anim layui-anim-upbit" data-anim="layui-anim-upbit"><div class="layui-inline"><label class="layui-form-label" style="width:90px">SlaveHost</label><div class="layui-input-inline" style="width:160px"><input type="text" autocomplete="off" lay-verify="required" class="layui-input slavehost"></div></div><div class="layui-inline"><label class="layui-form-label" style="width:20px">Port</label><div class="layui-input-inline" style="width: 60px"><input type="text" value="6379" lay-verify="number" autocomplete="off" class="layui-input slaveport"></div></div><div class="layui-inline"><label class="layui-form-label" style="width:20px">Auth</label><div class="layui-input-inline"><input type="password"  autocomplete="off" class="layui-input slaveauth"></div></div><div class="layui-form-mid add-sub layui-word-aux" ><img src="__THEMES__/images/sub-icon.png" class="pointer del"></div></div>');
+      var sInput = $(".sec-server");
+        for(var i = 0;i< sInput.length+1; i++){ //
+          $(sInput[i]).find('.slavehost').attr('name','info[slave]['+i+"][host]");
+          $(sInput[i]).find('.slaveport').attr('name','info[slave]['+i+"][port]");
+          $(sInput[i]).find('.slaveauth').attr('name','info[slave]['+i+"][auth]");
+        }
+      });
+  $(".form-main").on("click",".del",function(){
+    $(this).parent().parent().remove();
+    var sInput = $(".sec-server");
+    for(var i = 0;i< sInput.length; i++){ //
+      $(sInput[i]).find('.slavehost').attr('name','info[slave]['+i+"][host]");
+      $(sInput[i]).find('.slaveport').attr('name','info[slave]['+i+"][port]");
+      $(sInput[i]).find('.slaveauth').attr('name','info[slave]['+i+"][auth]");
+    }
+  })
+</script>
+</body>
+</html>
