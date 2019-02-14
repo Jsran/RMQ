@@ -16,9 +16,6 @@ class RMQ extends Base
     cli_set_process_title(Start::JR_MASTER);
     # 主进程PID
     Start::$pid = posix_getpid();
-    // $CFGTrait =  PATH.DS.CORE.DS.'C'.DS.'cli'.DS.'RedisMessageQueue'.DS.'CFGTrait.php';
-    // Start::$ctime = md5(file_get_contents($CFGTrait));
-    // RunLog::write(Start::$ctime);
     # 注册信号处理
     RunLog::write(
       sprintf('master install usr2 %s',
@@ -28,15 +25,6 @@ class RMQ extends Base
       $LOG_TYPE
     );
     LOOP:
-    // $TMd5 = md5(file_get_contents($CFGTrait));
-    // if($TMd5 != Start::$ctime)
-    // { # 文件修改后进行参数重置
-    //   $TtaitStatic = (new \ReflectionClass('jR\C\cli\RedisMessageQueue\CFGTrait'))->getStaticProperties();
-
-    //   array_walk($TtaitStatic,function($v,$k){Start::${$k} = $v;});
-    //   Start::$ctime = $TMd5;
-    //   RunLog::write('CFGTrait setting succ!'.Start::$timer_rmax);
-    // }
     array_map(function($v){ count($v) == 3 && Start::processRun($v[0],$v[1],$v[2]);}, 
       [[Start::JR_TIMER,'Timer',Start::$timer_nums],[Start::JR_CONSUME,'Consume',Start::$consume_nums],[Start::JR_REDIS_CHECKER,'RedisState',1]]);
     # 进程回收
@@ -85,11 +73,5 @@ class RMQ extends Base
          'r'
       )
     );
-  }
-
-  public function Timer()
-  { # 定时闹钟信号
-    pcntl_signal(SIGALRM, array('', 'signalHandle'), false);
-    pcntl_alarm(1);
   }
 }
