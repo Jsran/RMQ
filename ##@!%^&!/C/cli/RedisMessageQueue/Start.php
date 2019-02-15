@@ -121,7 +121,8 @@ class Start
       !Start::$stop ?: exit(RunLog::write("Timer_$id get stop flag ,will exit now bye.."));
       if($loopout >= self::$timer_rmax) exit(RunLog::write("Timer_$id run task nums $loopout,will exit now bye.."));
       $slave = $slave = empty($redis->slave) ? $redis : $redis->slave[array_rand($redis->slave)];
-      $data = $slave->zRange($bucketKey, $start, $start, true);
+      # $data = $slave->zRange($bucketKey, $start, $start, true);
+      $data = $slave->zRangeByScore($bucketKey,'-inf',time(),['withscores' => TRUE,'limit'=>[0,1]]);
       if(empty($data)) GOTO ELOOP2;
       $key = key($data);
       list($topic,$rid) = explode(':',$key);
@@ -246,7 +247,14 @@ class Start
       (new M\MQRedis)->getServersClear();
       throw new \Exception("Redis:{$rid} : {$key} Connection refused ".json_encode(error_get_last()));
     }
-    if (!empty($info[$i]['auth'])) $redis->auth($info[$i]['auth']);
+    if (!empty($info[$i]['auth'])){
+      if(!$redis->auth($info[$i]['auth'])) {
+        unset($instance);
+        (new M\MQRedis)->update(['state' => 0])->where(['id' => $rid])->run();
+        (new M\MQRedis)->getServersClear();
+        throw new \Exception("Redis:{$rid} : {$key} NOAUTH Authentication required");
+      }
+    }
     self::$time[$rid][$key] = time();
     $instance = $redis;
     CHECK:
