@@ -2,7 +2,7 @@
 namespace jR\C\cli\RedisMessageQueue;
 trait CFGTrait
 {
-  static $smtpconfig = ['host' => 'stmp.qq.com', 'port' => '25', 'user' => '452815115@qq.com', 'pass' => 'mimacuowu', ];
+  static $smtpconfig = ['host' => 'stmp.qq.com', 'port' => '25', 'user' => '452815115@qq.com', 'pass' => '###', ];
   static $consume_nums = 6;
   static $consume_rmax = 10000;
   static $priorityConfig = [Start::TASK_PRIORITY_HIGH => 5, Start::TASK_PRIORITY_NORMAL => 3, Start::TASK_PRIORITY_LOW => 2, ];
